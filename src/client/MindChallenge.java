@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package client;
+import client.RegisterPlayer;
+import client.MainMenu;
 
 /**
  *
