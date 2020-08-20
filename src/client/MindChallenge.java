@@ -3,12 +3,11 @@ import adt.*;
 import entity.*;
 import javax.swing.*;
 
-import java.util.ArrayList;
-
 public class MindChallenge extends JFrame {
     
-    String question[] = {"Question 1: Halo?","Question 2: Halo?","Question 3: Halo?"}; // HArd coded questions
-    ArrayList<String> players = new ArrayList<String>();
+    SetInterface<Question> questionSet = new Set<>();
+    PlayerListInterface<Player> registeredPlayers = new ArrList<Player>();
+    PlayerListInterface<Player> players = new ArrList<Player>();
     QueueInterface<GameMove> playerTurn = new Queue<GameMove>();
     
     public MindChallenge() {
