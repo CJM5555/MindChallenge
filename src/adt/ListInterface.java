@@ -6,7 +6,7 @@
 package adt;
 import java.util.Iterator;
 
-public interface PlayerListInterface<T> {
+public interface ListInterface<T> {
    
     public boolean add(T newEntry);
 
