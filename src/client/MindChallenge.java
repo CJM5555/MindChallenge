@@ -12,8 +12,8 @@ import javax.swing.*;
 public class MindChallenge extends JFrame {
     
     SetInterface<Question> questionSet = new Set<>();
-    PlayerListInterface<Player> registeredPlayers = new ArrList<Player>();
-    PlayerListInterface<Player> players = new ArrList<Player>();
+    ListInterface<Player> registeredPlayers = new ArrList<Player>();
+    ListInterface<Player> players = new ArrList<Player>();
     QueueInterface<GameMove> playerTurn;
     SortedListInterface<Ranking> rank = new SortedList<>();
     
