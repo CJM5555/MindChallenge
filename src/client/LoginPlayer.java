@@ -1,30 +1,23 @@
 
 package client;
-import adt.PlayerListInterface;
 import entity.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
 import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class RegisterPlayer extends javax.swing.JPanel {
+public class LoginPlayer extends javax.swing.JPanel {
 
     MindChallenge gameClient;
-    DefaultListModel registeredPlayerList = new DefaultListModel();
-        
-    public RegisterPlayer(MindChallenge gameClient) {
+    DefaultListModel playerList = new DefaultListModel();
+    
+    public LoginPlayer(MindChallenge gameClient) {
         initComponents();
         this.gameClient = gameClient;
-        jPlayerList.setModel(registeredPlayerList);
+        gameClient.players.clear();
+        
+        jPlayerList.setModel(playerList);
         jDeleteButton.setVisible(false);
-        registeredPlayerList.addElement(String.format("%-15s %-20s","ID","Name"));
+        playerList.addElement(String.format("%-15s %-20s","ID","Name"));
 
         jPlayerList.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -33,8 +26,6 @@ public class RegisterPlayer extends javax.swing.JPanel {
                     jDeleteButton.setVisible(true);
             }
         });
-        
-        displayRegisteredPlayer();
     }
 
     /**
@@ -47,11 +38,10 @@ public class RegisterPlayer extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         jLabel0 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jPlayerName = new javax.swing.JTextField();
-        jRegisterButton = new javax.swing.JButton();
+        jLoginButton = new javax.swing.JButton();
         jDeleteButton = new javax.swing.JButton();
         jConfirmButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -62,14 +52,15 @@ public class RegisterPlayer extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jPassword = new javax.swing.JPasswordField();
+        jRegister = new javax.swing.JButton();
 
+        setPreferredSize(new java.awt.Dimension(800, 600));
+
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
-        jPanel2.setPreferredSize(new java.awt.Dimension(800, 600));
-
         jLabel0.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel0.setText("Register Player");
+        jLabel0.setText("Join the game!");
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+5f));
         jLabel1.setText("Player Name: ");
@@ -81,11 +72,11 @@ public class RegisterPlayer extends javax.swing.JPanel {
             }
         });
 
-        jRegisterButton.setFont(jRegisterButton.getFont().deriveFont(jRegisterButton.getFont().getSize()+1f));
-        jRegisterButton.setText("Register");
-        jRegisterButton.addActionListener(new java.awt.event.ActionListener() {
+        jLoginButton.setFont(jLoginButton.getFont().deriveFont(jLoginButton.getFont().getSize()+5f));
+        jLoginButton.setText("Login");
+        jLoginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRegisterButtonActionPerformed(evt);
+                jLoginButtonActionPerformed(evt);
             }
         });
 
@@ -98,7 +89,7 @@ public class RegisterPlayer extends javax.swing.JPanel {
         });
 
         jConfirmButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jConfirmButton.setText("Back to login screen");
+        jConfirmButton.setText("Confirm");
         jConfirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jConfirmButtonActionPerformed(evt);
@@ -149,111 +140,109 @@ public class RegisterPlayer extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        jRegister.setFont(jRegister.getFont().deriveFont(jRegister.getFont().getSize()+5f));
+        jRegister.setText("Register");
+        jRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRegisterActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jPlayerId, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
                                     .addComponent(jPassword))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRegisterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLoginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jConfirmButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel0)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel0)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jRegister))
                     .addComponent(jScrollPane1)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jDeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(69, 69, 69))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addComponent(jLabel0)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel0)
+                    .addComponent(jRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jPlayerName, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jPlayerId, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(jRegisterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLoginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
                     .addComponent(jDeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jConfirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(27, 27, 27))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void registerPlayer(){
-        Player player = new Player(jPlayerName.getText(),jPlayerId.getText(),new String(jPassword.getPassword()));
-        gameClient.registeredPlayers.add(player);
-        registeredPlayerList.addElement(String.format("%-15s %-20s",jPlayerId.getText(),jPlayerName.getText()));
-        System.out.println("Player registered: " + player);
 
+    private void loginPlayer(){
+        Player player = new Player(jPlayerName.getText(),jPlayerId.getText(),new String(jPassword.getPassword()));
+        
+        if(gameClient.registeredPlayers.contains(player)){
+            playerList.addElement(String.format("%-15s %-20s",jPlayerId.getText(),jPlayerName.getText()));
+
+            gameClient.players.add(player);
+        }
+        else{
+            System.out.println("Not added (because cannot found as registered): " + player);
+        }
+        
         clearTextFields();
     }
     
@@ -265,27 +254,17 @@ public class RegisterPlayer extends javax.swing.JPanel {
         jPlayerName.requestFocus();
     }
     
+    private void jLoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginButtonActionPerformed
+        //Add button
+        loginPlayer();
+    }//GEN-LAST:event_jLoginButtonActionPerformed
     
-    private void savePlayer(){
-        try {
-            File file = new File("RegisteredPlayer.dat");
-            // System.out.println("***TRACE: " + file.getAbsolutePath());
-            ObjectOutputStream ooStream = new ObjectOutputStream(new FileOutputStream(file));
-            ooStream.writeObject(gameClient.registeredPlayers);
-            ooStream.close();
-        } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "File not found", "ERROR", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Cannot save to file", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }    
-    }
-    
-    private void displayRegisteredPlayer(){
-        for(int i=1;i<=gameClient.registeredPlayers.numElement();i++){
-            registeredPlayerList.addElement(String.format("%-15s %-20s",gameClient.registeredPlayers.getEntry(i).getPlayerID(),gameClient.registeredPlayers.getEntry(i).getPlayerName()));
-        }
-    }
-    
+    private void jConfirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmButtonActionPerformed
+        //Confirm button
+        gameClient.setContentPane(new GameScreen(gameClient));
+        gameClient.pack();
+    }//GEN-LAST:event_jConfirmButtonActionPerformed
+
     private void jPlayerNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPlayerNameKeyPressed
         // When enter is pressed
         if(evt.getKeyCode() == evt.VK_ENTER){
@@ -293,17 +272,13 @@ public class RegisterPlayer extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jPlayerNameKeyPressed
 
-    private void jRegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegisterButtonActionPerformed
-        //Add button
-        registerPlayer();
-    }//GEN-LAST:event_jRegisterButtonActionPerformed
-
     private void jDeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteButtonActionPerformed
         // TODO add your handling code here:
-        Player playerToRemove = gameClient.registeredPlayers.getEntry(jPlayerList.getSelectedIndex());
+        int index = jPlayerList.getSelectedIndex();
+        Player playerToRemove = gameClient.players.getEntry(index);
         
-        gameClient.registeredPlayers.remove(gameClient.registeredPlayers.getPosition(playerToRemove));
-        registeredPlayerList.removeElementAt(jPlayerList.getSelectedIndex());
+        gameClient.players.remove(gameClient.players.getPosition(playerToRemove));
+        playerList.removeElementAt(index);
         
         System.out.println(playerToRemove);
     }//GEN-LAST:event_jDeleteButtonActionPerformed
@@ -315,17 +290,16 @@ public class RegisterPlayer extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jPlayerIdKeyPressed
 
-    private void jConfirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmButtonActionPerformed
-        //Confirm button
-        savePlayer();
-        gameClient.setContentPane(new LoginPlayer(gameClient));
+    private void jRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegisterActionPerformed
+        // TODO add your handling code here:
+        gameClient.setContentPane(new RegisterPlayer(gameClient));
         gameClient.pack();
-    }//GEN-LAST:event_jConfirmButtonActionPerformed
+    }//GEN-LAST:event_jRegisterActionPerformed
 
     private void jPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordKeyPressed
+        // TODO add your handling code here:
         if(evt.getKeyCode() == evt.VK_ENTER){
-            registerPlayer();
-            
+            loginPlayer();
         }
     }//GEN-LAST:event_jPasswordKeyPressed
 
@@ -338,14 +312,14 @@ public class RegisterPlayer extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton jLoginButton;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPasswordField jPassword;
     private javax.swing.JTextField jPlayerId;
     private javax.swing.JList<String> jPlayerList;
     private javax.swing.JTextField jPlayerName;
-    private javax.swing.JButton jRegisterButton;
+    private javax.swing.JButton jRegister;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

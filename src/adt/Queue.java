@@ -29,14 +29,12 @@ public class Queue<T> implements QueueInterface<T>{
     }
   }
 
-  public T getFront() {
-    T front = null;
-
-    if (!isEmpty()) {
-      front = array[frontIndex];
-    }
-
-    return front;
+  public T peek() {
+    //If array is not empty, return the object in array
+    if (!isEmpty()) 
+        return array[frontIndex];
+    else
+        return null;
   }
 
   public T dequeue() {

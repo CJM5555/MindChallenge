@@ -5,7 +5,12 @@ import adt.*;
 
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 public class GameScreen extends javax.swing.JPanel {
@@ -36,7 +41,6 @@ public class GameScreen extends javax.swing.JPanel {
         initComponents();
         this.gameClient = gameClient;
         
-        loadQuestions();
         initializeGame();
         currentTurn = gameClient.playerTurn.dequeue();
         playerReady(currentTurn.getPlayer());
@@ -250,48 +254,8 @@ public class GameScreen extends javax.swing.JPanel {
         jLogger.append("Game initialized" + "\n");
     }
     
-    private void loadQuestions(){
-        String questionId[] = readFile("src/question/question_id.txt");
-        String questionContent[] = readFile("src/question/question_title.txt");
-        String answerA[] = readFile("src/question/question_option1.txt");
-        String answerB[] = readFile("src/question/question_option2.txt");
-        String answerC[] = readFile("src/question/question_option3.txt");
-        String answerD[] = readFile("src/question/question_option4.txt");
-        String correctAnswer[] = readFile("src/question/question_answer.txt");
-        
-        for(int i=0; i<questionId.length; i++){
-            gameClient.questionSet.add(new Question(questionId[i],questionContent[i],answerA[i],answerB[i],answerC[i],answerD[i],correctAnswer[i]));
-        }
-    }
-    
-    public static String[] readFile(String file){  
-        
-        try{
-            
-            Scanner fileScanner= new Scanner(new File(file));
-            int counter = 0;
-            while(fileScanner.hasNextLine()){ 
-                counter++;
-                fileScanner.nextLine(); 
-            }
-            fileScanner.close();
-            
-            String[] content = new String[counter]; 
-            Scanner idScanner2= new Scanner(new File(file));
-            for(int i=0; i<counter; i++){
-               content[i]=idScanner2.nextLine();
-            }  
-            idScanner2.close();
-            return content; 
-        }
-        catch(Exception e){
-            System.out.println("Σ(っ °Д °;)っ Error 404!");
-            return null;
-        } 
-    }
-    
     private boolean checkGameOver(GameMove currentTurn){
-        if(currentTurn.getStep() >= 5){ //5 Step to win
+        if(currentTurn.getStep() >= currentTurn.STEP_TO_WIN){ 
             
             //Display winner name etc...
             jPanel1.removeAll();
@@ -302,14 +266,40 @@ public class GameScreen extends javax.swing.JPanel {
             this.Option1.setText("Back To Main Menu");
             
             jLogger.append("Game over" + "\n");
-            for(int i=0; i<gameClient.players.numElement(); i++ ){
-                jLogger.append(gameClient.playerTurn.dequeue().toString());
-            }
+            recordToRank();
             
             gameClient.playerTurn.clear();
             return true;
         }
         return false;
+    }
+    
+    private void recordToRank(){
+        Ranking rank = new Ranking(currentTurn.getPlayer().getPlayerName(),currentTurn.getScore());
+        gameClient.rank.add(rank);
+        
+        for(int i=0; i<gameClient.players.numElement()-1; i++ ){
+            currentTurn = gameClient.playerTurn.dequeue();
+
+            rank = new Ranking(currentTurn.getPlayer().getPlayerName(),currentTurn.getScore());
+            gameClient.rank.add(rank);
+        }
+        System.out.print(gameClient.rank);
+        saveRanking();
+    }
+    
+    private void saveRanking(){
+        try {
+            File file = new File("Ranking.dat");
+            
+            ObjectOutputStream ooStream = new ObjectOutputStream(new FileOutputStream(file));
+            ooStream.writeObject(gameClient.rank);
+            ooStream.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "File not found", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Cannot save to file", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }  
     }
     
     private void nextTurn(){
