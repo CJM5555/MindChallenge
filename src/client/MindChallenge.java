@@ -50,7 +50,7 @@ public class MindChallenge extends JFrame {
         try {
             File file = new File("RegisteredPlayer.dat");
             ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(file));
-            registeredPlayers = (PlayerListInterface<Player>) inStream.readObject();
+            registeredPlayers = (ListInterface<Player>) inStream.readObject();
             
             inStream.close();
         } catch (FileNotFoundException ex) {
