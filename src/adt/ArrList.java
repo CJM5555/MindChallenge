@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
  *
  * @author USER
  */
-public class ArrList<T> implements PlayerListInterface<T> , Serializable {
+public class ArrList<T> implements ListInterface<T> , Serializable {
 
     private T[] array;
     private int numElement;
