@@ -1,6 +1,6 @@
 
 package client;
-import adt.PlayerListInterface;
+import adt.ListInterface;
 import entity.*;
 import java.io.File;
 import java.io.FileNotFoundException;
