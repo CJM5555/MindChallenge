@@ -14,7 +14,7 @@ public class MindChallenge extends JFrame {
     SetInterface<Question> questionSet = new Set<>();
     PlayerListInterface<Player> registeredPlayers = new ArrList<Player>();
     PlayerListInterface<Player> players = new ArrList<Player>();
-    QueueInterface<GameMove> playerTurn = new Queue<GameMove>();
+    QueueInterface<GameMove> playerTurn;
     SortedListInterface<Ranking> rank = new SortedList<>();
     
     public MindChallenge() {

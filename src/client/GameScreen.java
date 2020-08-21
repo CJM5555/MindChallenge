@@ -246,7 +246,9 @@ public class GameScreen extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     
     private void initializeGame(){
-        for(int i = 1; i <= gameClient.players.numElement(); i++){
+        int playerNo = gameClient.players.numElement();
+        gameClient.playerTurn = new Queue<GameMove>(playerNo);
+        for(int i = 1; i <= playerNo; i++){
             GameMove initialTurn = new GameMove(gameClient.players.getEntry(i),gameClient.questionSet.getEntry(questionNo),0,0);
             gameClient.playerTurn.enqueue(initialTurn); 
             questionNo++;
@@ -284,7 +286,6 @@ public class GameScreen extends javax.swing.JPanel {
             rank = new Ranking(currentTurn.getPlayer().getPlayerName(),currentTurn.getScore());
             gameClient.rank.add(rank);
         }
-        System.out.print(gameClient.rank);
         saveRanking();
     }
     
