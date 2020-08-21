@@ -49,10 +49,22 @@ public class MindChallenge extends JFrame {
     private void loadPlayer(){
         try {
             File file = new File("RegisteredPlayer.dat");
-            ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(file));
-            registeredPlayers = (ListInterface<Player>) inStream.readObject();
+            if (file.createNewFile()) { 
+            System.out.println("File created: " + file.getName());
+            } else {
+            System.out.println("File already exists.");
+            }
             
-            inStream.close();
+            FileInputStream inFile = new FileInputStream(file);
+            if(inFile.available() > 0){
+          
+                //System.out.println(in.readObject());
+                ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(file));
+                registeredPlayers = (ListInterface<Player>) inStream.readObject();
+                inStream.close();
+               
+             }
+             inFile.close();
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "File not found", "ERROR", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
