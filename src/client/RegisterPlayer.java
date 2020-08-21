@@ -249,11 +249,26 @@ public class RegisterPlayer extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     
     private void registerPlayer(){
-        Player player = new Player(jPlayerName.getText(),jPlayerId.getText(),new String(jPassword.getPassword()));
-        gameClient.registeredPlayers.add(player);
-        registeredPlayerList.addElement(String.format("%-15s %-20s",jPlayerId.getText(),jPlayerName.getText()));
-        System.out.println("Player registered: " + player);
+         boolean checkExist = false;
+        
+        Iterator<Player> iterator = gameClient.registeredPlayers.getIterator();
+        while (iterator.hasNext()) {
 
+            if(jPlayerName.getText().equals(iterator.next().getPlayerID())){
+                System.out.println("ID exist, try new one.");
+                JOptionPane.showMessageDialog(null, "ID Exist, Try New One!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                checkExist = true;
+                break;
+            }
+        }
+            
+        if(!checkExist){
+            Player player = new Player(jPlayerName.getText(),jPlayerId.getText(),new String(jPassword.getPassword()));
+            gameClient.registeredPlayers.add(player);
+            registeredPlayerList.addElement(String.format("%-15s %-20s",jPlayerId.getText(),jPlayerName.getText()));
+            System.out.println("Player registered: " + player);
+
+        }
         clearTextFields();
     }
     
