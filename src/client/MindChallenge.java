@@ -50,9 +50,9 @@ public class MindChallenge extends JFrame {
         try {
             File file = new File("RegisteredPlayer.dat");
             if (file.createNewFile()) { 
-            System.out.println("File created: " + file.getName());
+                System.out.println("File created: " + file.getName());
             } else {
-            System.out.println("File already exists.");
+                System.out.println("File already exists.");
             }
             
             FileInputStream inFile = new FileInputStream(file);
