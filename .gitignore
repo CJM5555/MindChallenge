@@ -66,3 +66,7 @@ build/classes/adt/PlayerListInterface.class
 build/classes/adt/ArrList.class
 build/classes/adt/ArrList$ArrListIterator.class
 build/built-jar.properties
+RegisteredPlayer.dat
+Ranking.dat
+build/classes/entity/GameMove.class
+build/classes/client/GameScreen.class

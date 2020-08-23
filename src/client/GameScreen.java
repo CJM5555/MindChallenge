@@ -247,9 +247,15 @@ public class GameScreen extends javax.swing.JPanel {
     
     private void initializeGame(){
         int playerNo = gameClient.players.numElement();
+        
+        //Determines the size of queue based on number of players
         gameClient.playerTurn = new Queue<GameMove>(playerNo);
+        
+        //Move each player to the queue and associate each players with a question
+        //Initialize initial players' steps and scores
         for(int i = 1; i <= playerNo; i++){
-            GameMove initialTurn = new GameMove(gameClient.players.getEntry(i),gameClient.questionSet.getEntry(questionNo),0,0);
+            GameMove initialTurn = new GameMove(gameClient.players.getEntry(i),
+                                                gameClient.questionSet.getEntry(questionNo),0,0);
             gameClient.playerTurn.enqueue(initialTurn); 
             questionNo++;
         }
@@ -257,7 +263,7 @@ public class GameScreen extends javax.swing.JPanel {
     }
     
     private boolean checkGameOver(GameMove currentTurn){
-        if(currentTurn.getStep() >= currentTurn.STEP_TO_WIN){ 
+        if(currentTurn.getStep() >= GameMove.STEP_TO_WIN){ 
             
             //Display winner name etc...
             jPanel1.removeAll();
@@ -304,10 +310,20 @@ public class GameScreen extends javax.swing.JPanel {
     }
     
     private void nextTurn(){
-        GameMove nextTurn = new GameMove(currentTurn.getPlayer(),gameClient.questionSet.getEntry(questionNo),currentTurn.getStep(),currentTurn.getScore());
-        gameClient.playerTurn.enqueue(nextTurn);
-        questionNo++;
+        //Assign nextTurn to the player with new questions and remains player's step and score
+        GameMove nextTurn = new GameMove(currentTurn.getPlayer(),
+                                         gameClient.questionSet.getEntry(questionNo),
+                                         currentTurn.getStep(),
+                                         currentTurn.getScore());
         
+        //Move player to the queue for next turn
+        gameClient.playerTurn.enqueue(nextTurn);
+        if(gameClient.questionSet.getEntry(questionNo+1) == null)
+            questionNo = 0; 
+        else
+            questionNo++;
+        
+        //Retrieve next player turn and get the next player ready
         currentTurn = gameClient.playerTurn.dequeue();  
         playerReady(currentTurn.getPlayer());
     }
@@ -327,9 +343,9 @@ public class GameScreen extends javax.swing.JPanel {
         this.Option4.setVisible(false);
     }
     
-    private void showQuestion(Question question){ //Suppose to pass in Question class
+    private void showQuestion(Question question){ 
         this.Question.setText(question.getQuestionContent());
-        this.Option1.setText(question.getAnswerA());  //To set question's option
+        this.Option1.setText(question.getAnswerA());  
         this.Option2.setText(question.getAnswerB());
         this.Option3.setText(question.getAnswerC());
         this.Option4.setText(question.getAnswerD());

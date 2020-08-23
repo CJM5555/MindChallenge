@@ -8,6 +8,22 @@ public class GameMove {
     private int score;
     public static final int STEP_TO_WIN = 3;
     
+    public void incStep() {
+        this.step++;
+    }
+    
+    public void decStep() {
+        this.step--;
+    }
+    
+    public int calculateScore(double timeSpent){
+        score += timeSpent * 50;
+        if(score < 0){
+            score = 0;
+        }
+        return score;
+    }
+        
     public GameMove(){
         
     }
@@ -17,14 +33,6 @@ public class GameMove {
         this.question = question;
         this.step = step;
         this.score = score;
-    }
-
-    public void incStep() {
-        this.step++;
-    }
-    
-    public void decStep() {
-        this.step--;
     }
     
     public int getStep() {
@@ -43,11 +51,4 @@ public class GameMove {
         return score;
     }
     
-    public int calculateScore(double timeSpent){
-        score += timeSpent * 50;
-        if(score < 0){
-            score = 0;
-        }
-        return score;
-    }
 }
