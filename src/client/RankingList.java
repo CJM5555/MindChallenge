@@ -1,6 +1,13 @@
 
 package client;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import javax.swing.JOptionPane;
+
 public class RankingList extends javax.swing.JPanel {
 
     MindChallenge gameClient;
@@ -21,6 +28,20 @@ public class RankingList extends javax.swing.JPanel {
         jRankingList.append(gameClient.rank.toString());
     }
     
+    private void saveRanking(){
+        try {
+            File file = new File("Ranking.dat");
+            
+            ObjectOutputStream ooStream = new ObjectOutputStream(new FileOutputStream(file));
+            ooStream.writeObject(gameClient.rank);
+            ooStream.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "File not found", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Cannot save to file", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }  
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -31,6 +52,7 @@ public class RankingList extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jRankingList = new javax.swing.JTextArea();
         jBackButton = new javax.swing.JButton();
+        jClearButton1 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
@@ -71,6 +93,14 @@ public class RankingList extends javax.swing.JPanel {
             }
         });
 
+        jClearButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jClearButton1.setText("Clear All Ranking Record");
+        jClearButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jClearButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -82,9 +112,11 @@ public class RankingList extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 597, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1)
-                            .addComponent(jBackButton, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jClearButton1)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jScrollPane1)
+                                .addComponent(jBackButton, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)))
                         .addGap(84, 84, 84))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -96,10 +128,12 @@ public class RankingList extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jBackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jClearButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 20, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -130,9 +164,20 @@ public class RankingList extends javax.swing.JPanel {
         gameClient.pack();
     }//GEN-LAST:event_jBackButtonActionPerformed
 
+    private void jClearButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jClearButton1ActionPerformed
+        gameClient.rank.clear();
+        JOptionPane.showMessageDialog(null, "Ranking list successfully cleared", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+        saveRanking();
+        if(gameClient.rank.isEmpty()){
+            gameClient.setContentPane(new RankingList(gameClient));
+            gameClient.pack();
+        }
+    }//GEN-LAST:event_jClearButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBackButton;
+    private javax.swing.JButton jClearButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;

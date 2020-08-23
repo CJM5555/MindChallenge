@@ -122,7 +122,7 @@ public class MindChallenge extends JFrame {
             
             inStream.close();
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "File not found", "ERROR", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "File not found", "ERROR", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Cannot read from file", "ERROR", JOptionPane.ERROR_MESSAGE);
         } catch (ClassNotFoundException ex){
