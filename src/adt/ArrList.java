@@ -7,10 +7,7 @@ import java.io.*;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- *
- * @author USER
- */
+
 public class ArrList<T> implements ListInterface<T> , Serializable {
 
     private T[] array;
