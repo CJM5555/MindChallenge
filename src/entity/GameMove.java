@@ -45,6 +45,9 @@ public class GameMove {
     
     public int calculateScore(double timeSpent){
         score += timeSpent * 50;
+        if(score < 0){
+            score = 0;
+        }
         return score;
     }
 }

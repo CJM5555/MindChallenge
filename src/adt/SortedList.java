@@ -22,7 +22,7 @@ public class SortedList<T extends Comparable<T>> implements SortedListInterface<
     public boolean add(T newRecord) {
         int i = -1;
         
-        while(++i < length && newRecord.compareTo(rankList[i]) > 0);
+        while(++i < length && newRecord.compareTo(rankList[i]) < 0);
         
         makeRoom(i+1);
         rankList[i] = newRecord;
@@ -34,7 +34,7 @@ public class SortedList<T extends Comparable<T>> implements SortedListInterface<
     @Override
     public boolean remove(T anEntry) {
         if(length!=0){
-            for(int i=0; i<length && rankList[i].compareTo(anEntry)<0; i++){
+            for(int i=0; i<length && rankList[i].compareTo(anEntry)>0; i++){
                 if(rankList[i].equals(anEntry)){
                     removeGap(i+1);
                     length--;

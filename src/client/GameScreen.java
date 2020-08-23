@@ -352,6 +352,7 @@ public class GameScreen extends javax.swing.JPanel {
         }
         else{
             currentTurn.decStep();
+            currentTurn.calculateScore(-timeCountDown);
             jLogger.append("Player " + currentTurn.getPlayer().getPlayerName() + " answered wrongly!" + "\n");
             jLogger.append("Correct answer is " + correctAns + "\n");
         }
