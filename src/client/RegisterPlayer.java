@@ -1,5 +1,5 @@
-
 package client;
+
 import adt.ListInterface;
 import entity.*;
 import java.io.File;
@@ -19,22 +19,23 @@ public class RegisterPlayer extends javax.swing.JPanel {
 
     MindChallenge gameClient;
     DefaultListModel registeredPlayerList = new DefaultListModel();
-        
+
     public RegisterPlayer(MindChallenge gameClient) {
         initComponents();
         this.gameClient = gameClient;
         jPlayerList.setModel(registeredPlayerList);
         jDeleteButton.setVisible(false);
-        registeredPlayerList.addElement(String.format("%-15s %-20s","ID","Name"));
+        registeredPlayerList.addElement(String.format("%-15s %-20s", "ID", "Name"));
 
         jPlayerList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent evt) {
-                if(!evt.getValueIsAdjusting())
+                if (!evt.getValueIsAdjusting()) {
                     jDeleteButton.setVisible(true);
+                }
             }
         });
-        
+
         displayRegisteredPlayer();
     }
 
@@ -248,41 +249,40 @@ public class RegisterPlayer extends javax.swing.JPanel {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void registerPlayer(){
-         boolean checkExist = false;
-        
+
+    private void registerPlayer() {
+        boolean checkExist = false;
+
         Iterator<Player> iterator = gameClient.registeredPlayers.getIterator();
         while (iterator.hasNext()) {
 
-            if(jPlayerId.getText().equals(iterator.next().getPlayerID())){
+            if (jPlayerId.getText().equals(iterator.next().getPlayerID())) {
                 System.out.println("ID exist, try new one.");
                 JOptionPane.showMessageDialog(null, "ID Exist, Try New One!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 checkExist = true;
                 break;
             }
         }
-            
-        if(!checkExist){
-            Player player = new Player(jPlayerName.getText(),jPlayerId.getText(),new String(jPassword.getPassword()));
+
+        if (!checkExist) {
+            Player player = new Player(jPlayerName.getText(), jPlayerId.getText(), new String(jPassword.getPassword()));
             gameClient.registeredPlayers.add(player);
-            registeredPlayerList.addElement(String.format("%-15s %-20s",jPlayerId.getText(),jPlayerName.getText()));
+            registeredPlayerList.addElement(String.format("%-15s %-20s", jPlayerId.getText(), jPlayerName.getText()));
             System.out.println("Player registered: " + player);
 
         }
         clearTextFields();
     }
-    
-    private void clearTextFields(){
+
+    private void clearTextFields() {
         jPlayerName.setText("");
         jPlayerId.setText("");
         jPassword.setText("");
-        
+
         jPlayerName.requestFocus();
     }
-    
-    
-    private void savePlayer(){
+
+    private void savePlayer() {
         try {
             File file = new File("RegisteredPlayer.dat");
             // System.out.println("***TRACE: " + file.getAbsolutePath());
@@ -293,18 +293,18 @@ public class RegisterPlayer extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "File not found", "ERROR", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Cannot save to file", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }    
-    }
-    
-    private void displayRegisteredPlayer(){
-        for(int i=1;i<=gameClient.registeredPlayers.numElement();i++){
-            registeredPlayerList.addElement(String.format("%-15s %-20s",gameClient.registeredPlayers.getEntry(i).getPlayerID(),gameClient.registeredPlayers.getEntry(i).getPlayerName()));
         }
     }
-    
+
+    private void displayRegisteredPlayer() {
+        for (int i = 1; i <= gameClient.registeredPlayers.numElement(); i++) {
+            registeredPlayerList.addElement(String.format("%-15s %-20s", gameClient.registeredPlayers.getEntry(i).getPlayerID(), gameClient.registeredPlayers.getEntry(i).getPlayerName()));
+        }
+    }
+
     private void jPlayerNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPlayerNameKeyPressed
         // When enter is pressed
-        if(evt.getKeyCode() == evt.VK_ENTER){
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             jPlayerId.requestFocus();
         }
     }//GEN-LAST:event_jPlayerNameKeyPressed
@@ -316,17 +316,19 @@ public class RegisterPlayer extends javax.swing.JPanel {
 
     private void jDeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteButtonActionPerformed
         // TODO add your handling code here:
-        Player playerToRemove = gameClient.registeredPlayers.getEntry(jPlayerList.getSelectedIndex());
-        
-        gameClient.registeredPlayers.remove(gameClient.registeredPlayers.getPosition(playerToRemove));
-        registeredPlayerList.removeElementAt(jPlayerList.getSelectedIndex());
-        
-        System.out.println(playerToRemove);
+        if (jPlayerList.getSelectedIndex() != 0) {
+            Player playerToRemove = gameClient.registeredPlayers.getEntry(jPlayerList.getSelectedIndex());
+
+            gameClient.registeredPlayers.remove(gameClient.registeredPlayers.getPosition(playerToRemove));
+            registeredPlayerList.removeElementAt(jPlayerList.getSelectedIndex());
+
+            System.out.println(playerToRemove);
+        }
     }//GEN-LAST:event_jDeleteButtonActionPerformed
 
     private void jPlayerIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPlayerIdKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == evt.VK_ENTER){
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             jPassword.requestFocus();
         }
     }//GEN-LAST:event_jPlayerIdKeyPressed
@@ -339,9 +341,9 @@ public class RegisterPlayer extends javax.swing.JPanel {
     }//GEN-LAST:event_jConfirmButtonActionPerformed
 
     private void jPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordKeyPressed
-        if(evt.getKeyCode() == evt.VK_ENTER){
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             registerPlayer();
-            
+
         }
     }//GEN-LAST:event_jPasswordKeyPressed
 

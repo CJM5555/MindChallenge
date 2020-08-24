@@ -1,7 +1,8 @@
-
 package client;
+
 import entity.*;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -9,21 +10,22 @@ public class LoginPlayer extends javax.swing.JPanel {
 
     MindChallenge gameClient;
     DefaultListModel playerList = new DefaultListModel();
-    
+
     public LoginPlayer(MindChallenge gameClient) {
         initComponents();
         this.gameClient = gameClient;
         gameClient.players.clear();
-        
+
         jPlayerList.setModel(playerList);
         jDeleteButton.setVisible(false);
-        playerList.addElement(String.format("%-15s %-20s","ID","Name"));
+        playerList.addElement(String.format("%-15s %-20s", "ID", "Name"));
 
         jPlayerList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent evt) {
-                if(!evt.getValueIsAdjusting())
+                if (!evt.getValueIsAdjusting()) {
                     jDeleteButton.setVisible(true);
+                }
             }
         });
     }
@@ -231,43 +233,46 @@ public class LoginPlayer extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loginPlayer(){
-        Player player = new Player(jPlayerName.getText(),jPlayerId.getText(),new String(jPassword.getPassword()));
-        
-        if(gameClient.registeredPlayers.contains(player)){
-            playerList.addElement(String.format("%-15s %-20s",jPlayerId.getText(),jPlayerName.getText()));
+    private void loginPlayer() {
+        Player player = new Player(jPlayerName.getText(), jPlayerId.getText(), new String(jPassword.getPassword()));
+
+        if (gameClient.registeredPlayers.contains(player)) {
+            playerList.addElement(String.format("%-15s %-20s", jPlayerId.getText(), jPlayerName.getText()));
 
             gameClient.players.add(player);
-        }
-        else{
+        } else {
             System.out.println("Not added (because cannot found as registered): " + player);
         }
-        
+
         clearTextFields();
     }
-    
-    private void clearTextFields(){
+
+    private void clearTextFields() {
         jPlayerName.setText("");
         jPlayerId.setText("");
         jPassword.setText("");
-        
+
         jPlayerName.requestFocus();
     }
-    
+
     private void jLoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginButtonActionPerformed
         //Add button
         loginPlayer();
     }//GEN-LAST:event_jLoginButtonActionPerformed
-    
+
     private void jConfirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfirmButtonActionPerformed
         //Confirm button
-        gameClient.setContentPane(new GameScreen(gameClient));
-        gameClient.pack();
+        if (gameClient.players.numElement() > 1) {
+            gameClient.setContentPane(new GameScreen(gameClient));
+            gameClient.pack();
+        } else {
+            JOptionPane.showMessageDialog(null, "Must have 2 or more players in game!", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jConfirmButtonActionPerformed
 
     private void jPlayerNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPlayerNameKeyPressed
         // When enter is pressed
-        if(evt.getKeyCode() == evt.VK_ENTER){
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             jPlayerId.requestFocus();
         }
     }//GEN-LAST:event_jPlayerNameKeyPressed
@@ -275,17 +280,19 @@ public class LoginPlayer extends javax.swing.JPanel {
     private void jDeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteButtonActionPerformed
         // TODO add your handling code here:
         int index = jPlayerList.getSelectedIndex();
-        Player playerToRemove = gameClient.players.getEntry(index);
-        
-        gameClient.players.remove(gameClient.players.getPosition(playerToRemove));
-        playerList.removeElementAt(index);
-        
-        System.out.println(playerToRemove);
+        if (index != 0) {
+            Player playerToRemove = gameClient.players.getEntry(index);
+
+            gameClient.players.remove(gameClient.players.getPosition(playerToRemove));
+            playerList.removeElementAt(index);
+
+            System.out.println("Deleted: " + playerToRemove);
+        }
     }//GEN-LAST:event_jDeleteButtonActionPerformed
 
     private void jPlayerIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPlayerIdKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == evt.VK_ENTER){
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             jPassword.requestFocus();
         }
     }//GEN-LAST:event_jPlayerIdKeyPressed
@@ -298,7 +305,7 @@ public class LoginPlayer extends javax.swing.JPanel {
 
     private void jPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == evt.VK_ENTER){
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             loginPlayer();
         }
     }//GEN-LAST:event_jPasswordKeyPressed

@@ -66,7 +66,7 @@ public class MindChallenge extends JFrame {
              }
              inFile.close();
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "File not found", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.out.println("No player registered yet, thus Player.dat not found!");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Cannot read from file", "ERROR", JOptionPane.ERROR_MESSAGE);
         } catch (ClassNotFoundException ex){
@@ -122,7 +122,7 @@ public class MindChallenge extends JFrame {
             
             inStream.close();
         } catch (FileNotFoundException ex) {
-            //JOptionPane.showMessageDialog(null, "File not found", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.out.println("No ranking added yet, thus Ranking.dat not found!");
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Cannot read from file", "ERROR", JOptionPane.ERROR_MESSAGE);
         } catch (ClassNotFoundException ex){

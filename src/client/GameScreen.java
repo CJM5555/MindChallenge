@@ -35,6 +35,7 @@ public class GameScreen extends javax.swing.JPanel {
     });
         
     int questionNo = 0;
+    final int MAX_QUESTION_NO = 40;
     char optionSelected;
     
     public GameScreen(MindChallenge gameClient) {
@@ -279,6 +280,20 @@ public class GameScreen extends javax.swing.JPanel {
             gameClient.playerTurn.clear();
             return true;
         }
+        else if(questionNo >= MAX_QUESTION_NO){
+            //If exceed maximum question and no one reaches destination, no winner
+            jPanel1.removeAll();
+            jPanel1.add(Question);
+            jPanel1.add(Option1);
+            jPanel1.repaint();
+            this.Question.setText("No winner in this game :(" + "\n No ranking will be recorded");
+            this.Option1.setText("Back To Main Menu");
+            
+            jLogger.append("Game over" + "\n");
+
+            gameClient.playerTurn.clear();
+            return true;
+        }
         return false;
     }
     
@@ -316,7 +331,7 @@ public class GameScreen extends javax.swing.JPanel {
                                          currentTurn.getStep(),
                                          currentTurn.getScore());
         
-        //Move player to the queue for next turn
+        //Move player to the back of queue for next turn
         gameClient.playerTurn.enqueue(nextTurn);
         if(gameClient.questionSet.getEntry(questionNo+1) == null)
             questionNo = 0; 
