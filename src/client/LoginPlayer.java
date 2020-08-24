@@ -236,12 +236,13 @@ public class LoginPlayer extends javax.swing.JPanel {
     private void loginPlayer() {
         Player player = new Player(jPlayerName.getText(), jPlayerId.getText(), new String(jPassword.getPassword()));
 
-        if (gameClient.registeredPlayers.contains(player)) {
+        if (gameClient.registeredPlayers.contains(player) && !gameClient.players.contains(player)) {
             playerList.addElement(String.format("%-15s %-20s", jPlayerId.getText(), jPlayerName.getText()));
 
             gameClient.players.add(player);
         } else {
-            System.out.println("Not added (because cannot found as registered): " + player);
+            System.out.println("Not added : " + player);
+            System.out.println("The player is not registered or player already joined the game!");
         }
 
         clearTextFields();
