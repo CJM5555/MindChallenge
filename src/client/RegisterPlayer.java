@@ -255,7 +255,7 @@ public class RegisterPlayer extends javax.swing.JPanel {
         Iterator<Player> iterator = gameClient.registeredPlayers.getIterator();
         while (iterator.hasNext()) {
 
-            if(jPlayerName.getText().equals(iterator.next().getPlayerID())){
+            if(jPlayerId.getText().equals(iterator.next().getPlayerID())){
                 System.out.println("ID exist, try new one.");
                 JOptionPane.showMessageDialog(null, "ID Exist, Try New One!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 checkExist = true;
