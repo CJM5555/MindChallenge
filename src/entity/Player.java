@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author USER
+ * @author ChinYinShen
  */
 public class Player implements Serializable{
    
